@@ -67,7 +67,6 @@ class Message(TypedDict):
 
 class ClientErrorLog(TypedDict):
     date: str
-    time: float
     event_method: str
     args: list
     kwargs: dict
@@ -91,3 +90,20 @@ class MessageEditLog(TypedDict):
     guild_id: int | None
     message_id: int
     data: dict
+
+class MessageCommandLog(TypedDict):
+    date: str
+    user_id: int
+    guild_id: int | None
+    channel_id: int
+    message_id: int
+    accept: bool
+
+class AppCommandLog(TypedDict):
+    date: str
+    user_id: int
+    guild_id: int | None
+    channel_id: int | None
+    interaction_id: int
+    data: dict
+    accept: bool

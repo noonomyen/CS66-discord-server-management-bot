@@ -7,7 +7,7 @@ class Config:
         def __init__(self, data: dict) -> None:
             self.ROLE: int = data["role"]
             self.DELETE_LOG: int = data["delete-log"]
-            self.COMMAND: int = data["command"]
+            self.DSMB: int = data["dsmb"]
 
     class Role:
         def __init__(self, data: dict) -> None:
