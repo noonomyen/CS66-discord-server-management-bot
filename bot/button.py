@@ -1,13 +1,17 @@
 from env import CONFIG
 
 import discord
+import discord.ui
 import db
 
-class SelectSection(discord.ui.View):
+def ButtonID(name: str) -> str:
+    return "BUTTON." + str(CONFIG.GUILD_ID) + "." + name
+
+class SelectSectionView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="Section 01", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="Section 01", style=discord.ButtonStyle.primary, custom_id=ButtonID("ROLE-SECTION-01"))
     async def btn_section_01(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)
@@ -24,7 +28,7 @@ class SelectSection(discord.ui.View):
                 await member.add_roles(discord.Object(CONFIG.ROLE.SECTION_01))
                 await interaction.response.send_message(content="Section role changed to 01 successful", ephemeral=True)
 
-    @discord.ui.button(label="Section 02", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="Section 02", style=discord.ButtonStyle.primary, custom_id=ButtonID("ROLE-SECTION-02"))
     async def btn_section_02(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)
@@ -41,7 +45,7 @@ class SelectSection(discord.ui.View):
                 await member.add_roles(discord.Object(CONFIG.ROLE.SECTION_02))
                 await interaction.response.send_message(content="Section role changed to 02 successful", ephemeral=True)
 
-    @discord.ui.button(label="Section 03", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="Section 03", style=discord.ButtonStyle.primary, custom_id=ButtonID("ROLE-SECTION-03"))
     async def btn_section_03(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)
@@ -58,7 +62,7 @@ class SelectSection(discord.ui.View):
                 await member.add_roles(discord.Object(CONFIG.ROLE.SECTION_03))
                 await interaction.response.send_message(content="Section role changed to 03 successful", ephemeral=True)
 
-    @discord.ui.button(label="Remove", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Remove", style=discord.ButtonStyle.red, custom_id=ButtonID("REMOVE-ROLE-SECTION"))
     async def btn_section_unset(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)
@@ -75,11 +79,11 @@ class SelectSection(discord.ui.View):
                 await member.remove_roles(discord.Object(CONFIG.ROLE.SECTION_03))
                 await interaction.response.send_message(content="Remove section role successful", ephemeral=True)
 
-class HideSemester(discord.ui.View):
+class HideSemesterView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="2566/1", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="2566/1", style=discord.ButtonStyle.primary, custom_id=ButtonID("SEMESTER-66-1"))
     async def btn_semester_1(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)
@@ -103,7 +107,7 @@ class HideSemester(discord.ui.View):
                         "remove": remove
                     })
 
-    @discord.ui.button(label="2566/2", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="2566/2", style=discord.ButtonStyle.primary, custom_id=ButtonID("SEMESTER-66-2"))
     async def btn_semester_2(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user and interaction.guild:
             member = interaction.guild.get_member(interaction.user.id)

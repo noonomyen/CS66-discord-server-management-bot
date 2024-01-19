@@ -10,6 +10,7 @@ import discord
 import db
 import col_type
 import obj2dict
+import button
 
 class Client(CustomType_Client):
     def __init__(self) -> None:
@@ -22,6 +23,11 @@ class Client(CustomType_Client):
 
         self.command_tree = discord.app_commands.CommandTree(self)
         load_command_tree(self.command_tree, CONFIG.GUILD_ID)
+
+
+    async def setup_hook(self) -> None:
+        self.add_view(button.SelectSectionView())
+        self.add_view(button.HideSemesterView())
 
     async def on_ready(self) -> None:
         print("Logged on as", self.user)

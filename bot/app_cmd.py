@@ -38,8 +38,8 @@ def load_command_tree(tree: app_commands.CommandTree, guild_id: int) -> None:
             if role_channel and not isinstance(role_channel, (discord.ForumChannel, discord.CategoryChannel)):
                 if action.value == 1:
                     await role_channel.send("# Press the button to get role")
-                    await role_channel.send(content="## Class section", view=button.SelectSection())
-                    await role_channel.send(content="## Semester (Hide category)", view=button.HideSemester())
+                    await role_channel.send(content="## Class section", view=button.SelectSectionView())
+                    await role_channel.send(content="## Semester (Hide category)", view=button.HideSemesterView())
                     await interaction.response.send_message(content="Successful", ephemeral=False if interaction.channel_id == CONFIG.CHANNEL.DSMB else True)
                 elif action.value == 2:
                     await role_channel.purge()
