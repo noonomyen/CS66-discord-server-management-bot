@@ -6,6 +6,7 @@ import discord
 import button
 import db
 import obj2dict
+import modal
 
 def load_command_tree(tree: app_commands.CommandTree, guild_id: int) -> None:
     @tree.command(name="button-give-role", description="Manage buttons in #give-role channel", guild=discord.Object(guild_id))
@@ -46,3 +47,31 @@ def load_command_tree(tree: app_commands.CommandTree, guild_id: int) -> None:
                     await interaction.response.send_message(content="Purged", ephemeral=False if interaction.channel_id == CONFIG.CHANNEL.DSMB else True)
                 else:
                     await interaction.response.send_message(content="Argument error", ephemeral=False if interaction.channel_id == CONFIG.CHANNEL.DSMB else True)
+
+    @tree.command(name="send-message", description="Send message in this channel with bot", guild=discord.Object(guild_id))
+    async def send_message(interaction: discord.Interaction):
+        accept = False
+        if isinstance(interaction.user, discord.Member):
+            if interaction.user.guild_permissions.administrator:
+                accept = True
+            else:
+                await interaction.response.send_message(content="This command is for administrators only", ephemeral=True)
+                return
+
+        db_result = db.COL_ACL.insert_one({
+            "date": str(interaction.created_at.utcnow()),
+            "guild_id": interaction.guild_id,
+            "channel_id": interaction.channel_id,
+            "interaction_id": interaction.id,
+            "user_id": interaction.user.id,
+            "data": {
+                "name": "send-message",
+                "message": None
+            },
+            "accept": accept
+        })
+
+        if accept and interaction.channel_id and isinstance(interaction.user, discord.Member):
+            await interaction.response.send_modal(modal.SendMessage_TextInput(interaction.channel_id, interaction.user.id, db_result.inserted_id))
+        else:
+            await interaction.response.send_message(content="Failed", ephemeral=True)
